@@ -1,0 +1,14 @@
+{
+  "name": "emsbe",
+  "version": "1.0.0",
+  "description": "backend for employee management system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Partha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
