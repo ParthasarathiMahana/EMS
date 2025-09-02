@@ -1,0 +1,31 @@
+{
+  "name": "hyperloop",
+  "version": "1.0.0",
+  "private":true,
+  "description": "EMS for faster and better results.",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages"
+  ],
+  "scripts": {
+    "build": "npm run -w @hyperloop/packages build && npm run -w backend build && npm run -w frontend build",
+    "dev-schemas": "cd packages && npm run dev",
+    "dev": "concurrently --raw \"npm run dev-backend\" \"npm run dev-frontend\"",
+    "dev-backend": "cd apps/backend && npm run dev",
+    "dev-frontend": "cd apps/frontend/emsFE && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ParthasarathiMahana/EMS.git"
+  },
+  "author": "Partha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ParthasarathiMahana/EMS/issues"
+  },
+  "homepage": "https://github.com/ParthasarathiMahana/EMS#readme",
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
