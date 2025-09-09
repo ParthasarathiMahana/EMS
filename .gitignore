@@ -1,5 +1,0 @@
-frontend/emsFE/node_modules
-backend/node_modules
-backend/.env.env # optional, simpler rule
-packages/node_modules
-node_modules
