@@ -1,5 +1,5 @@
 {
-  "name": "emsfe",
+  "name": "hyperloop-fe",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@repo/schemas": "*",
+    "@repo/ui": "*",
     "@hookform/resolvers": "^5.2.1",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-label": "^2.1.7",

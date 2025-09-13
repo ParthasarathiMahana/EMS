@@ -11,7 +11,7 @@ app.get('/', (req: e.Request, res: e.Response)=>{
     res.json({"message": "Hello There... Welcome to Hyperloop"})
 })
 
-app.use('/admin', require('./routes/admin.route'))
+app.use('/user', require('./routes/user.route'))
 
 const startServer = async() => {
     try {

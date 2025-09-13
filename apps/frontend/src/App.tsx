@@ -9,7 +9,7 @@ function App() {
   return (
     <>
     <div className='relative'>
-      <ModeToggle classNames="px-2 mt-2 absolute z-[2] left-[96%]"/>
+      <ModeToggle classNames="mt-2 absolute z-[2] left-[90%] md:left-[96%]"/>
       <div>
         <BrowserRouter>
           <Routes>

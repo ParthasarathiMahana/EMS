@@ -2,19 +2,11 @@ import type {Request, Response} from "express"
 import mongoose = require("mongoose")
 const express = require('express')
 const router = express.Router()
-const Admin = require('../model/admin.model')
+const Admin = require('../model/user.model')
 const db = mongoose.connection.db
+const {addUser} = require("../controller/user.controller")
 
-router.post('/', async(req:Request, res:Response)=>{
-    try {
-        const response = await Admin.create(req.body)   
-        res.status(201).json({"message": "Admin created successfully."})     
-    } catch (error) {
-        console.log("error while creating Admin: ", error);
-        res.status(500).json({message: error})
-    }
-    // res.json({message:"Hello from post req", body:req.body})
-})
+router.post('/', addUser)
 
 router.delete('/', async(req:Request, res:Response)=>{
     console.log(req.body);

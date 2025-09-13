@@ -7,7 +7,6 @@ import { Input } from '../../../components/ui/input'
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/ui/button'
 
-
 const Signup = () => {
 
   const registrationSchema = z.object({
@@ -120,7 +119,7 @@ const Signup = () => {
         
 
         <Link to="/login">
-          <p className="text-sm mt-8 text-[var(--primary)] hover:underline">Login page</p>
+          <p className="text-sm mt-8 text-[var(--primary)] hover:underline">Already have an account? go to Login page</p>
         </Link>
       </form>
     </div>

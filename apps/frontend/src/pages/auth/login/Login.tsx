@@ -1,38 +1,25 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../../components/ui/input";
 import { Link } from "react-router-dom";
-// import { ModeToggle } from "../../../components/mode-toggle";
 import { useState } from "react";
 import {Eye, EyeOff} from "lucide-react"
-// import Password from "../../../components/ui/password-input";
-import { useTheme } from "../../../components/theme-provider";
-
-const loginSchema = z.object({
-  email: z.email({ error: "Invalid email address" }),
-  password: z.string().min(6, { error: "Password must be at least 6 characters" }),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import {loginSchema, type LoginInput} from "@repo/schemas"
 
 export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
+  } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
 
   const [showPassword, setShowPassword] = useState(false)
-  const {theme} = useTheme()
 
-  console.log(theme)
-
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = (data: LoginInput) => {
     console.log("Login Data:", data);
     // Add your login API call here
   };
