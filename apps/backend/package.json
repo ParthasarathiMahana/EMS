@@ -14,6 +14,7 @@
   "dependencies": {
     "@repo/schemas": "*",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.3.0",
     "eslint": "^9.33.0",
     "nodemon": "^3.1.10",

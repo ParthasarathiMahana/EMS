@@ -2,16 +2,20 @@ require("dotenv").config();
 const express = require("express");
 import type e = require("express");
 const connectToDb = require("./DB/monngodb");
+const cookieParser = require('cookie-parser')
 
 const app = express()
 app.use(express.json()) // can accept json in req.body
 app.use(express.urlencoded({ extended: true })) //can accept form with key value pairs, value(can be array, object. reason: extend==>true)
+app.use(cookieParser())
 
 app.get('/', (req: e.Request, res: e.Response)=>{
     res.json({"message": "Hello There... Welcome to Hyperloop"})
 })
 
 app.use('/user', require('./routes/user.route'))
+app.use('/login', require('./routes/auth.route'))
+app.use('/logout', require('./routes/auth.route'))
 
 const startServer = async() => {
     try {
