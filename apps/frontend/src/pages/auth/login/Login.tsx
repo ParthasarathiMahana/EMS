@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import {Eye, EyeOff} from "lucide-react"
 import {loginSchema, type LoginInput} from "@repo/schemas"
+import { useLogin } from "../../../services/auth.query";
 
 export default function Login() {
   const {
@@ -18,10 +19,10 @@ export default function Login() {
   });
 
   const [showPassword, setShowPassword] = useState(false)
+  const {mutate: loginUser} = useLogin()
 
   const onSubmit = (data: LoginInput) => {
-    console.log("Login Data:", data);
-    // Add your login API call here
+    loginUser(data)
   };
 
   return (

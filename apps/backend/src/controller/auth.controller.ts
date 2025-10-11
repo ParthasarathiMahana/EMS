@@ -15,7 +15,7 @@ const login = async(req: e.Request, res: e.Response) => {
 
         if(isPasswordMatch){
             let token = createAccessToken({email: userData.email, role:userData.role})
-            res.cookie("access", token)
+            res.cookie("access", token, {httpOnly: true})
         }else{
             res.status(401).json({"message":"wrong password"})
         }

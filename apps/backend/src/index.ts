@@ -2,9 +2,16 @@ require("dotenv").config();
 const express = require("express");
 import type e = require("express");
 const connectToDb = require("./DB/monngodb");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 const app = express()
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+}));
+
 app.use(express.json()) // can accept json in req.body
 app.use(express.urlencoded({ extended: true })) //can accept form with key value pairs, value(can be array, object. reason: extend==>true)
 app.use(cookieParser())

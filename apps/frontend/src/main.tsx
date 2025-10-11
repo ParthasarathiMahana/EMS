@@ -7,7 +7,7 @@ import ThemeProvider from './components/theme-provider.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider defaultTheme='light' storageKey='ems-ui-theme'>
-    <App />
+        <App />
     </ThemeProvider>
   </StrictMode>,
 )
