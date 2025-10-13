@@ -23,6 +23,7 @@ app.get('/', (req: e.Request, res: e.Response)=>{
 app.use('/user', require('./routes/user.route'))
 app.use('/login', require('./routes/auth.route'))
 app.use('/logout', require('./routes/auth.route'))
+app.use('/auth', require('./routes/auth.route'))
 
 const startServer = async() => {
     try {

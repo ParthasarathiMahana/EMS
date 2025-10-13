@@ -8,7 +8,7 @@ type userDetailType = {
 }
 
 const createAccessToken = (userDetails: userDetailType) => {
-    return jwt.sign({email: userDetails.email, role: userDetails.role}, jwtAccessSecret, { expiresIn: '1h' })
+    return jwt.sign({email: userDetails.email, role: userDetails.role}, jwtAccessSecret, { expiresIn: '15m' })
 }
 
 const createRefreshToken = (userDetails: userDetailType) => {
@@ -21,6 +21,7 @@ const validateAccessToken = async(accessToken: string) => {
         return validationResult
     } catch (error) {
         console.log("error: ", error)
+        return null
     }
 }
 const validateRefreshToken = () => {}

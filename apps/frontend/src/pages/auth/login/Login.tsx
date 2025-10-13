@@ -3,11 +3,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../../components/ui/input";
-import { Link } from "react-router-dom";
+import {Spinner} from "../../../components/ui/spinner"
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {Eye, EyeOff} from "lucide-react"
 import {loginSchema, type LoginInput} from "@repo/schemas"
 import { useLogin } from "../../../services/auth.query";
+import { toast } from "sonner";
 
 export default function Login() {
   const {
@@ -19,10 +21,13 @@ export default function Login() {
   });
 
   const [showPassword, setShowPassword] = useState(false)
-  const {mutate: loginUser} = useLogin()
+  const {mutate: loginUser, isPending} = useLogin()
+  const navigate = useNavigate()
 
   const onSubmit = (data: LoginInput) => {
-    loginUser(data)
+    loginUser(data, {
+      onSuccess: (response) => response.status !== 401 ? navigate('/profile') : toast(response?.data?.message, {duration:3000})
+    })
   };
 
   return (
@@ -78,7 +83,9 @@ export default function Login() {
 
       <Button type="submit"
         className="rounded-[4px] h-[32px] w-[350px] mt-[8px] hover:cursor-pointer border-none"
+        disabled={isPending}
       >
+       {isPending &&  <Spinner />}
         Login
       </Button>
 
