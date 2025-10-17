@@ -24,10 +24,14 @@ const validateAccessToken = async(accessToken: string) => {
         return null
     }
 }
-const validateRefreshToken = () => {}
+const validateRefreshToken = async(refreshToken: string) => {
+    try {
+        let validateResult = await jwt.verify(refreshToken, jwtRefreshSecret)
+        return validateResult
+    } catch (error) {
+        console.log("error: ", error)
+        return null
+    }
+}
 
-const removeAccessToken = () => {}
-
-const removeRefreshToken = () => {}
-
-module.exports = {createAccessToken, createRefreshToken, validateAccessToken, validateRefreshToken, removeAccessToken, removeRefreshToken}
+module.exports = {createAccessToken, createRefreshToken, validateAccessToken, validateRefreshToken}

@@ -1,7 +1,7 @@
 import type e = require('express');
 const UserModel = require('../model/user.model')
 const {loginSchema} = require('@repo/schemas')
-const {createAccessToken, createRefreshToken, validateAccessToken} = require('../utils/jwt')
+const {createAccessToken, createRefreshToken, validateAccessToken, validateRefreshToken} = require('../utils/jwt')
 const bcrypt = require('bcrypt')
 
 const login = async(req: e.Request, res: e.Response) => {
@@ -47,7 +47,6 @@ const login = async(req: e.Request, res: e.Response) => {
 
 const me = async(req: e.Request, res: e.Response) => {
     let accessToken = req.cookies.access;
-    let refreshToken = req.cookies.refresh
 
     let verifyRes = await validateAccessToken(accessToken)
     if(verifyRes !== null){
@@ -76,4 +75,35 @@ const logout = async (req: e.Request, res: e.Response) => {
     return res.status(200).json({"message":"logged out successfully"})
 }
 
-module.exports = {login, logout, me}
+
+const validateRefresh = async (req: e.Request, res: e.Response) => {
+  let refreshToken = req.cookies.refresh
+  let verifyRes = await validateRefreshToken(refreshToken)
+    if(verifyRes !== null){
+        let userDetails = await UserModel.findOne({email: verifyRes.email}, {"password": 0})
+        if(!userDetails){
+          return res.json({"message":"User not found!"})
+        }
+        
+        let accessToken = createAccessToken({email: verifyRes.email, role: verifyRes.role})
+        let refreshToken = createRefreshToken({email: verifyRes.email, role: verifyRes.role})
+        
+        return res
+          .cookie("access", accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "strict",
+          })
+          .cookie("refresh", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "strict",
+          })
+          .status(200)
+          .json({ message: "new access token created successfully", accessToken: accessToken })
+    }else{
+        return res.status(401).json({"isAuth":false, "message":"user not authenticated"})
+    }
+}
+
+module.exports = {login, logout, me, validateRefresh}

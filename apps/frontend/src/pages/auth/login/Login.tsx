@@ -26,7 +26,7 @@ export default function Login() {
 
   const onSubmit = (data: LoginInput) => {
     loginUser(data, {
-      onSuccess: (response) => response.status !== 401 ? navigate('/profile') : toast(response?.data?.message, {duration:3000})
+      onSuccess: (response) => response.status === 200 ? navigate('/profile') : toast(response?.data?.message, {duration:3000})
     })
   };
 

@@ -7,6 +7,8 @@ import { ModeToggle } from './components/mode-toggle'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'sonner'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+
 
 function App() {
 
@@ -23,7 +25,7 @@ function App() {
             <Routes>
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />} />
-              <Route path='/profile' element={<Profile/>}/>
+              <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
             </Routes>
           </BrowserRouter>
         </div>

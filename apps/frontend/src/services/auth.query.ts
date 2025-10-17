@@ -1,4 +1,4 @@
-import api from '../utils/api'
+import axiosInstance from '../utils/axiosInstance'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { type LoginInput } from '@repo/schemas'
 
@@ -6,7 +6,7 @@ import { type LoginInput } from '@repo/schemas'
 
 const login = async (payload: LoginInput) => {
     try {
-        const response = await api.post('/login',{
+        const response = await axiosInstance.post('/login',{
             email: payload.email,
             password: payload.password
         })
@@ -33,29 +33,44 @@ export const useLogin = () => {
 // ==========================================================(me api)==========================================================
 
 const showStatus = async () => {
-    try {
-        const response = api.get('/auth/me')
+        const response = await axiosInstance.get('/auth/me')
         return response
-    } catch (error) {
-        return error
-    }
 }
 
 export const useShowStatus = () => {
     const query = useQuery({
         queryKey: ['showStatus'],
-        queryFn: showStatus
+        queryFn: showStatus,
+        staleTime: 15 * 60 * 1000,
+        refetchOnWindowFocus: true,
+        refetchOnMount: true,
+        retry: false
     })
 
     return query
 }
 
+// ==========================================================(refresh api)==========================================================
+
+const refreshAuth = async() => {
+    const response = await axiosInstance.get('/auth/refresh')
+    return response?.data
+}
+
+export const useRefreshAuth = () => {
+    const query = useQuery({
+        queryKey:['refreshAuth'],
+        queryFn: refreshAuth,
+        retry: false
+    })
+    return query
+}
 
 // ==========================================================(logout api)==========================================================
 
 const logout = async () => {
     try {
-        const response = api.get('/logout')
+        const response = await axiosInstance.get('/logout')
         return response
     } catch (error) {
         return error
