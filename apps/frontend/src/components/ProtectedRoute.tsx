@@ -12,7 +12,6 @@ const ProtectedRoute = ({children}: childrenType) => {
 
     useEffect(()=>{
         if(!isLoading){
-        // console.log(data,isError);
             if(isError || !data){
                 navigate('/login')
             }

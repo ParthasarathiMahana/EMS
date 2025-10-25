@@ -34,7 +34,7 @@ export const useLogin = () => {
 
 const showStatus = async () => {
         const response = await axiosInstance.get('/auth/me')
-        return response
+        return response?.data
 }
 
 export const useShowStatus = () => {

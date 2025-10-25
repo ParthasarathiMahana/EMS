@@ -8,6 +8,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'sonner'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
+import { AppLayout } from './AppLayout.tsx'
 
 
 function App() {
@@ -25,12 +26,14 @@ function App() {
             <Routes>
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />} />
-              <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
+              <Route element={<ProtectedRoute><AppLayout/></ProtectedRoute>}>
+                <Route path='/profile' element={<Profile/>}/>
+              </Route>
             </Routes>
           </BrowserRouter>
         </div>
       </div>
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left"/>
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right"/>
     </QueryClientProvider>
     </>
   )

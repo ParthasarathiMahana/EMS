@@ -5,10 +5,15 @@ const axiosInstance = axios.create({
     withCredentials: true
 })
 
+const axiosBase = axios.create({
+    baseURL: "http://localhost:3001",
+    withCredentials: true
+  })
+
 let isRefreshing = false
 let pendingApiQueue: any[] = []
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: any, token: string | null = null) => {    
     pendingApiQueue.forEach(prom => {
       if (error) {
         prom.reject(error)
@@ -31,15 +36,15 @@ axiosInstance.interceptors.response.use(
                 isRefreshing = true
                 originalRequest._retry = true
                 try {
-                    console.log("calling refresh api from interceptor......");
-                    const apiResponse = await axiosInstance.get('/auth/refresh')
+                    // console.log("calling refresh api from interceptor......");
+                    const apiResponse = await axiosBase.get('/auth/refresh') 
                     processQueue(null, apiResponse.data.accessToken)
                     // call the original request
-                    console.log("redirecting to original request from interceptor.......");
+                    // console.log("redirecting to original request from interceptor.......");
                     return axiosInstance(originalRequest)
                 } catch (error) {
-                    // processQueue(error, null)
-                    console.log("Error while validating refresh token!", error);
+                    // console.log("Error while validating refresh token!", error);
+                    processQueue(error, null)
                     return Promise.reject(error)
                 }finally{
                     isRefreshing = false
