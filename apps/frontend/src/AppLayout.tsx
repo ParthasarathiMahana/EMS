@@ -1,5 +1,5 @@
 // AppLayout.tsx
-import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar"
+import { SidebarProvider } from "./components/ui/sidebar"
 import { AppSidebar } from "./components/Appsidebar"
 import { Outlet } from "react-router-dom"
 
@@ -9,10 +9,10 @@ export function AppLayout() {
         <div className="flex h-screen w-full">
             <AppSidebar />
             <div className="flex flex-col flex-grow">
-                <SidebarTrigger className="relative"/>
+                {/* <SidebarTrigger className="relative"/> */}
                 {/* <header className="border-b p-4">Header Here</header> */}
-                <main className="pl-1 pr-1">
-                    <div className="h-[96vh] rounded-[8px] bg-[var(--sidebar)] p-3">
+                <main className="px-1 py-0.5 ">
+                    <div className="h-[99vh] my-0.5 rounded-lg bg-[var(--sidebar)] p-3 overflow-auto">
                         <Outlet />
                     </div>
                 </main>

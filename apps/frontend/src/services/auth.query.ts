@@ -78,9 +78,9 @@ const logout = async () => {
 }
 
 export const useLogout = () => {
-    const query = useQuery({
-        queryKey: ['logout'],
-        queryFn: logout
+    const query = useMutation({
+        mutationKey: ['logout'],
+        mutationFn: logout
     })
 
     return query
