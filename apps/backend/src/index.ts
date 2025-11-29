@@ -1,0 +1,43 @@
+require("dotenv").config();
+const express = require("express");
+import type e = require("express");
+const connectToDb = require("./DB/monngodb");
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
+
+const app = express()
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+}));
+
+app.use(express.json()) // can accept json in req.body
+app.use(express.urlencoded({ extended: true })) //can accept form with key value pairs, value(can be array, object. reason: extend==>true)
+app.use(cookieParser())
+
+app.get('/', (req: e.Request, res: e.Response)=>{
+    res.json({"message": "Hello There... Welcome to Hyperloop"})
+})
+
+app.use('/user', require('./routes/user.route'))
+app.use('/login', require('./routes/auth.route'))
+app.use('/logout', require('./routes/auth.route'))
+app.use('/auth', require('./routes/auth.route'))
+
+const startServer = async() => {
+    try {
+        await connectToDb()
+        app.listen(3001, (err: any)=>{
+            if(err){
+                return console.error("Error while seting up the port for your server: ",err);
+            }
+        
+            console.log("Server is up and running on port: ", 3001);
+        })
+    } catch (error) {
+        console.error("Error while connecting to DB or listening to port", error)
+    }
+}
+
+startServer()
