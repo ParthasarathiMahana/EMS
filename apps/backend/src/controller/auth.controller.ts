@@ -47,8 +47,8 @@ const login = async(req: e.Request, res: e.Response) => {
 
 const me = async(req: e.Request, res: e.Response) => {
     let accessToken = req.cookies.access;
-
     let verifyRes = await validateAccessToken(accessToken)
+    
     if(verifyRes !== null){
         let userDetails = await UserModel.findOne({email: verifyRes.email}, {"password": 0})
         // console.log(userDetails);

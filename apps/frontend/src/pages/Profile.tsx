@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Camera, Mail, Phone, MapPin, Calendar, 
   Building, Users, Edit2, Save, X,
@@ -14,23 +14,62 @@ import { Badge } from '../components/ui/badge';
 import { Separator } from '../components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { useGetUser } from '../services/user.query';
+
+type employeeType = {
+  "empID": string,
+  "name": string,
+  "email": string,
+  "phone": string,
+  "department": string,
+  "designation": string,
+  "reportingManager": string,
+  "location": string,
+  "joiningDate": string,
+  "employmentType": string,
+  "status": string,
+  "bio": string,
+  "skills": string[],
+};
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [employee, setEmployee] = useState({
-    employeeId: 'EMP-2024-1234',
-    name: 'Sarah Johnson',
-    email: 'sarah.johnson@company.com',
-    phone: '+1 (555) 123-4567',
-    department: 'Engineering',
-    position: 'Senior Software Engineer',
-    manager: 'John Davis',
-    location: 'San Francisco Office',
-    joiningDate: 'Jan 15, 2020',
-    employmentType: 'Full-time',
-    status: 'Active',
-    bio: 'Experienced software engineer specializing in full-stack development with a focus on scalable cloud solutions.',
-  });
+  const [employee, setEmployee] = useState<employeeType>(
+    {
+      empID: 'EMP-2024-1234',
+      name: 'Sarah Johnson',
+      email: 'sarah.johnson@company.com',
+      phone: '+1 (555) 123-4567',
+      department: '_',
+      designation: 'Senior Software Engineer',
+      reportingManager: 'John Davis',
+      location: 'San Francisco Office',
+      joiningDate: 'Jan 15, 2020',
+      employmentType: 'Full-time',
+      status: 'Active',
+      bio: 'Experienced software engineer specializing in full-stack development with a focus on scalable cloud solutions.',
+      skills: ['React', 'Node.js', 'TypeScript', 'Python', 'AWS', 'Docker', 'Kubernetes', 'PostgreSQL', 'GraphQL', 'CI/CD'],
+    }
+  );
+
+  const { data: userData, isPending } = useGetUser();
+
+
+  useEffect(()=>{
+
+    let employeeData: employeeType;;
+    if(!isPending){
+      // console.log(userData?.user);
+      employeeData = userData?.user;
+      const name = userData?.user?.firstName + " " + userData?.user?.lastName
+      delete userData?.user?.firstName
+      delete userData?.user?.lastName
+      employeeData.name = name;
+      // console.log(employeeData);
+      setEmployee(employeeData)
+    };
+
+  }, [userData])
 
   const [editForm, setEditForm] = useState(employee);
 
@@ -41,10 +80,10 @@ const Profile = () => {
     { label: 'Performance', value: '94%', icon: TrendingUp, color: 'text-orange-600' }
   ];
 
-  const skills = [
-    'React', 'Node.js', 'TypeScript', 'Python', 'AWS',
-    'Docker', 'Kubernetes', 'PostgreSQL', 'GraphQL', 'CI/CD'
-  ];
+  // const skills = [
+  //   'React', 'Node.js', 'TypeScript', 'Python', 'AWS',
+  //   'Docker', 'Kubernetes', 'PostgreSQL', 'GraphQL', 'CI/CD'
+  // ];
 
   const recentActivities = [
     { type: 'attendance', desc: 'Checked in for the day', time: '2 hours ago', status: 'success' },
@@ -115,12 +154,12 @@ const Profile = () => {
                   <>
                     <div className="flex items-center gap-3">
                       <h1 className="text-3xl font-bold">{employee.name}</h1>
-                      <Badge variant={employee.status === 'Active' ? 'default' : 'secondary'}>
+                      <Badge variant={employee.status === 'active' ? 'default' : 'secondary'}>
                         {employee.status}
                       </Badge>
                     </div>
-                    <p className="text-lg text-muted-foreground">{employee.position}</p>
-                    <p className="text-sm text-muted-foreground">ID: {employee.employeeId}</p>
+                    <p className="text-lg text-muted-foreground">{employee.designation}</p>
+                    <p className="text-sm text-muted-foreground">ID: {employee.empID}</p>
                     <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Building className="h-4 w-4" />
@@ -148,11 +187,11 @@ const Profile = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="position">Position</Label>
+                        <Label htmlFor="designation">designation</Label>
                         <Input
-                          id="position"
-                          value={editForm.position}
-                          onChange={(e) => handleChange('position', e.target.value)}
+                          id="designation"
+                          value={editForm.designation}
+                          onChange={(e) => handleChange('designation', e.target.value)}
                         />
                       </div>
                     </div>
@@ -257,7 +296,7 @@ const Profile = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {skills.map((skill, idx) => (
+                      {employee.skills.map((skill, idx) => (
                         <Badge key={idx} variant="secondary">
                           {skill}
                         </Badge>
@@ -275,7 +314,7 @@ const Profile = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label className="text-muted-foreground">Employee ID</Label>
-                        <p className="font-medium">{employee.employeeId}</p>
+                        <p className="font-medium">{employee.empID}</p>
                       </div>
                       <div>
                         <Label className="text-muted-foreground">Employment Type</Label>
@@ -286,8 +325,8 @@ const Profile = () => {
                         <p className="font-medium">{employee.department}</p>
                       </div>
                       <div>
-                        <Label className="text-muted-foreground">Manager</Label>
-                        <p className="font-medium">{employee.manager}</p>
+                        <Label className="text-muted-foreground">reportingManager</Label>
+                        <p className="font-medium">{employee.reportingManager}</p>
                       </div>
                       <div>
                         <Label className="text-muted-foreground">Joining Date</Label>
